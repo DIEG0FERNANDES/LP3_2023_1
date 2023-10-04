@@ -1,0 +1,20 @@
+{
+  "name": "TV_Show_API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/DIEG0FERNANDES/TV_Show_API.git",
+  "author": "Diego_dos_Santos_Fernandes <cookieezito@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^4.15.0",
+    "inversify": "^6.0.1",
+    "mongodb": "^5.5.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "prisma": "^4.15.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

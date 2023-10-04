@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "aa52ba85-9233-4f89-a060-f1c2e8fe7493",
+		"name": "ceps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26131612"
+	},
+	"item": [
+		{
+			"name": "delete os bancos de dados",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deve salvar um CEP com dados válidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('deve salvar um CEP com dados válidos',()=>{\r",
+							"    pm.response.to.have.status(201)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagem} = response\r",
+							"    pm.expect(mensagem).to.equal('CEP cadastrado com sucesso')\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cep\": \"79210-000\",\r\n  \"logradouro\": \"Anástacio\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/ceps",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "não deve salvar um CEP com um número de CEP inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('não deve salvar um CEP com um número de CEP inválido',()=>{\r",
+							"    pm.response.to.have.status(400)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagensDeErro} = response\r",
+							"    pm.expect(mensagensDeErro[0]).to.equal('Número de CEP inválido')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cep\": \"79200000\",\r\n    \"logradouro\": \"Aquidauana\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/ceps",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "não deve salvar um CEP com um logradouro inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('não deve salvar um CEP com um logradouro inválido',()=>{\r",
+							"    pm.response.to.have.status(400)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagensDeErro} = response\r",
+							"    pm.expect(mensagensDeErro[0]).to.equal('Logradouro inválido')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cep\": \"79200-000\",\r\n    \"logradouro\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/ceps",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deve recuperar o logradouro de um CEP previamente cadastrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('deve recuperar o logradouro de um CEP previamente cadastrado',()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"    const response = pm.response.json()\r",
+							"    const {endereco} = response\r",
+							"    const cep = '79210-000'\r",
+							"    const expectedLogradouro = 'Anástacio'\r",
+							"    pm.expect(endereco._id).to.not.null\r",
+							"    pm.expect(endereco.cep).to.equal(cep)\r",
+							"    pm.expect(endereco.logradouro).to.equal(expectedLogradouro)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps/busca/cep/79210-000",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps",
+						"busca",
+						"cep",
+						"79210-000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deve retornar mensagem de não encontrado para um CEP não previamente cadastrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('deve retornar mensagem de não encontrado para um CEP não previamente cadastrado',()=>{\r",
+							"    pm.response.to.have.status(404)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagem} = response\r",
+							"    pm.expect(mensagem).to.equal('Logradouro não encontrado')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps/busca/cep/79200-001",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps",
+						"busca",
+						"cep",
+						"79200-001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "não deve recuperar o logradouro de um CEP com formato inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('não deve recuperar o logradouro de um CEP com formato inválido',()=>{\r",
+							"    pm.response.to.have.status(400)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagem} = response\r",
+							"    pm.expect(mensagem).to.equal('CEP inválido')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps/busca/cep/79200000",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps",
+						"busca",
+						"cep",
+						"79200000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deve recuperar o CEP de um logradouro previamente cadastrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('deve recuperar o CEP de um logradouro previamente cadastrado',()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"    const response = pm.response.json()\r",
+							"    const logradouro = 'Anástacio';\r",
+							"    const expectedCep = '79210-000';\r",
+							"    const {endereco} = response\r",
+							"    pm.expect(endereco._id).to.not.null\r",
+							"    pm.expect(endereco.cep).to.equal(expectedCep)\r",
+							"    pm.expect(endereco.logradouro).to.equal(logradouro)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps/busca/logradouro/Anástacio",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps",
+						"busca",
+						"logradouro",
+						"Anástacio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deve retornar mensagem de não encontrado para um logradouro não previamente cadastrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('deve retornar mensagem de não encontrado para um logradouro não previamente cadastrado',()=>{\r",
+							"    pm.response.to.have.status(404)\r",
+							"    const response = pm.response.json()\r",
+							"    const {mensagem} = response\r",
+							"    pm.expect(mensagem).to.equal('CEP não encontrado')\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/ceps/busca/logradouro/Aquidauana",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"ceps",
+						"busca",
+						"logradouro",
+						"Aquidauana"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://cep-api-cicd-test.vercel.app",
+			"type": "string"
+		}
+	]
+}
