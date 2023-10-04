@@ -1,0 +1,21 @@
+{
+  "name": "exemplo02",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.15.0-integration-windows-portability.6",
+    "inversify": "^6.0.1",
+    "mongodb": "^5.3.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "prisma": "^4.14.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
